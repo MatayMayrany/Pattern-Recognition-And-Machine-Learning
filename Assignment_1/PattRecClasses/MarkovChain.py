@@ -20,12 +20,14 @@ class MarkovChain:
         self.A = transition_prob #TransitionProb(i,j)= P[S(t)=j | S(t-1)=i]
 
 
-        self.nStates = transition_prob.shape[0] # number of cloumns i.e states
+        self.nStates = transition_prob.shape[1] # number of cloumns i.e states
 
         self.is_finite = False
         if self.A.shape[0] != self.A.shape[1]: # is finite if number of columns does not equal number of rows. 
             self.is_finite = True
-
+            self.end_state = self.nStates - 1 # index of final state fixed for now as last index
+            print("endstate:", self.end_state)
+  
 
     def probDuration(self, tmax):
         """
@@ -90,11 +92,11 @@ class MarkovChain:
         S[0] = np.random.choice(self.nStates, p=self.q);
 
         for i in range(1, tmax):
-            pi = self.A[S[i-1]]
+            prev_state = S[i-1]
+            pi = self.A[prev_state]
             S[i] = np.random.choice(self.nStates, p=pi);
             if self.is_finite and S[i] == self.end_state:
-                return S
-            
+                return S[:i+1]
         return S
 
     def viterbi(self):

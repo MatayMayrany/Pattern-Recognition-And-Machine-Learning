@@ -72,14 +72,16 @@ class HMM:
         
         #*** Insert your own code here and remove the following error message 
         states = self.stateGen.rand(nSamples) # get states from state gen markov chain
-        outputs = np.empty(nSamples)
-
-        for i in range (1, nSamples):
+        numberOfFeatures = len(self.outputDistr[0].rand(1))
+        numberOfStates = len(states)
+        outputs = np.empty(shape=(numberOfFeatures, numberOfStates))
+        for i in range (0, nSamples):
             curr_state = states[i]
-            outputs[i] = self.outputDistr[curr_state].rand(1);
             if self.stateGen.is_finite and curr_state == self.stateGen.end_state:
-                return outputs, states
+                return outputs[:i+1], states
             
+            output = self.outputDistr[curr_state].rand(1).ravel(order='F')
+            outputs[:, i] = output;
         return outputs, states
         
     def viterbi(self):
