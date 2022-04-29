@@ -26,7 +26,6 @@ class MarkovChain:
         if self.A.shape[0] != self.A.shape[1]: # is finite if number of columns does not equal number of rows. 
             self.is_finite = True
             self.end_state = self.nStates - 1 # index of final state fixed for now as last index
-            print("endstate:", self.end_state)
   
 
     def probDuration(self, tmax):
