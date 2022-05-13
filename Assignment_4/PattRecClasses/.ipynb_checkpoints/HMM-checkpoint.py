@@ -115,15 +115,13 @@ class HMM:
         numberOfFeatures = len(self.outputDistr)
         probOfObservations = np.zeros((numberOfFeatures, numberOfObservations))
         scaledProbOfObservations = np.zeros((numberOfFeatures, numberOfObservations))
-        
         for feature in range(numberOfFeatures):
             for observation in range(numberOfObservations):
                 probOfObservations[feature, observation] = self.outputDistr[feature].prob(observations[observation])
-                
         if shouldScale:        
             for feature in range(numberOfFeatures):
                 for observation in range(numberOfObservations):
-                    scaledProbOfObservations[feature, observation] = probOfObservations[feature,observation]/np.amax(probOfObservations[:,observation])
+                    scaledProbOfObservations[feature, observation] = probOfObservations[feature,observation] / np.amax(probOfObservations[:,observation])
         else:
             scaledProbOfObservations = probOfObservations
                 
